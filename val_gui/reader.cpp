@@ -17,7 +17,7 @@ reader::reader(QString _path) {
 }
 
 QList<Leak> reader::get_leaks() {
-    static QRegularExpression leakExp ("==\\d*==(\\s)\\d*(\\s)bytes(\\s)in*\\d*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)\\d*(==\\d*==)(\\s*)(?:(?!\\s*==6561==\\s*==6561==).)*");
+    static QRegularExpression leakExp ("==\\d*==(\\s)\\d*(\\s)(\\(\\d*\\s[a-zA-Z]*,\\s\\d*\\s[a-zA-Z]*\\)\\s*)?bytes(\\s)in*\\d*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)\\d*(==\\d*==)(\\s*)(?:(?!\\s*==6561==\\s*==6561==).)*");
     static QRegularExpressionMatchIterator matchIterator = leakExp.globalMatch(content);
 
     QList<Leak> matches;
@@ -44,7 +44,12 @@ QString reader::get_summary() const {
         summary.append(match.captured(0));
     }
 
-
     static QRegularExpression re("==\\d*==");
     return summary.replace(re, "").replace("    ", "\n").trimmed();
+}
+
+QString reader::get_command() const {
+    static QRegularExpression commandExp("Command: (\\S+)(?!==\\d*==)");
+    static QRegularExpression re("==\\d*==");
+    return "Val-gui - " + commandExp.match(content).captured(0).replace(re,"").replace("Command:","").trimmed();
 }

@@ -19,6 +19,7 @@ public:
     reader(QString _path);
     QList<Leak> get_leaks();
     QString get_summary() const;
+    QString get_command() const;
 };
 
 #endif // READER_H

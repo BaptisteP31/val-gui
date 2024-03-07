@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     reader rd("./valgrind-out.txt");
+
+    this->setWindowTitle(rd.get_command());
+
     QList<Leak> leaks = rd.get_leaks();
 
     for (auto &leak : leaks) {
@@ -31,12 +34,14 @@ MainWindow::MainWindow(QWidget *parent)
         QStandardItem *inFunctions = new QStandardItem("Functions");
         for (const auto& function : leak.get_functions()) {
             QStandardItem *func = new QStandardItem(function);
+            inFunctions->setForeground(Qt::darkBlue);
             inFunctions->appendRow(func);
         }
 
 
         item->appendRow(inFiles);
         item->appendRow(inFunctions);
+        item->setForeground(Qt::darkRed);
         model->appendRow(item);
     }
 
