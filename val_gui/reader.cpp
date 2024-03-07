@@ -31,6 +31,7 @@ QList<Leak> reader::get_leaks() {
 QString reader::get_summary() const {
     static QRegularExpression heapSummaryExp("==\\d*==\\sHEAP\\sSUMMARY:(?s)(.*?)==\\d*==\\s==\\d*==");
     static QRegularExpression leakSummaryExp("==\\d*==\\sLEAK\\sSUMMARY:(?s)(.*?)==\\d*==\\s==\\d*==");
+    static QRegularExpression errorSummaryExp("==\\d*==\\sERROR\\sSUMMARY:\\s*\\d*\\s*[aA-zZ]*\\s*[aA-zZ]*\\s*\\d*\\s*[aA-zZ]*\\s*\\([aA-zZ]*:\\s*\\d*\\s*[aA-zZ]*\\s*\\d*\\)");
 
     QString summary;
     for (const QRegularExpressionMatch &match : heapSummaryExp.globalMatch(content)) {
@@ -40,6 +41,12 @@ QString reader::get_summary() const {
     summary.append("\n\n");
 
     for (const QRegularExpressionMatch &match : leakSummaryExp.globalMatch(content)) {
+        summary.append(match.captured(0));
+    }
+
+    summary.append("\n\n");
+
+    for (const QRegularExpressionMatch &match : errorSummaryExp.globalMatch(content)) {
         summary.append(match.captured(0));
     }
 
