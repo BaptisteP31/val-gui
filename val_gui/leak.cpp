@@ -14,7 +14,7 @@ Leak::Leak(QString _content)
     }
 
     static QRegularExpression fileNameRegex("\\([aA-zZ]*.cpp:\\d*\\)");
-    static QRegularExpression functionRegex("(?:\\w+\\s+)*?(?:(\\w+)::)?(\\w+)\\s*\\(([^:()]*?)\\)");
+    static QRegularExpression functionRegex("(?:\\w+\\s+)*?(?:(\\w+)::)?(\\w+)\\s*\\(([^:()]*?)\\)(\\s\\([aA-zZ]*.[aA-zZ]*:\\d*\\))?");
 
     for (const QRegularExpressionMatch &match : fileNameRegex.globalMatch(content)) {
         if(match.hasMatch()) {
@@ -27,8 +27,6 @@ Leak::Leak(QString _content)
             functions << match.captured(0).trimmed();
         }
     }
-
-    qDebug() << functions;
 
     content = content.trimmed().replace(re,"").replace("    ", "\n");
 }

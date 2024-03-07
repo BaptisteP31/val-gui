@@ -17,13 +17,12 @@ reader::reader(QString _path) {
 }
 
 QList<Leak> reader::get_leaks() {
-    static QRegularExpression leakExp ("==\\d*==(\\s)\\d*(\\s)(\\(\\d*\\s[a-zA-Z]*,\\s\\d*\\s[a-zA-Z]*\\)\\s*)?bytes(\\s)in*\\d*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)[a-zA-Z]*(\\s)\\d*(\\s)[a-zA-Z]*(\\s)\\d*(==\\d*==)(\\s*)(?:(?!\\s*==6561==\\s*==6561==).)*");
+    static QRegularExpression leakExp ("==\\d*==(\\s)\\d*(\\s)[aA-zZ]*\\s*[aA-zZ]*\\s*\\d*\\s*[aA-zZ]*(\\(\\d*\\s*[aA-zZ]*,?\\s*\\d*\\s*[aA-zZ]*\\))?\\s*byte\\s*[aA-zZ]*\\s*\\d*\\s*[aA-zZ]*\\s*[aA-zZ]*\\s*[aA-zZ]*\\s*[aA-zZ]*\\s*\\d*\\s*[aA-zZ]*\\s*\\d*\\s*([aA-zZ]*\\s*[aA-zZ]*\\s*\\d*\\s*[aA-zZ]*\\s*\\d*\\s)?.+?(?=(==\\d*==\\s*==\\d*==)|$)");
     static QRegularExpressionMatchIterator matchIterator = leakExp.globalMatch(content);
 
     QList<Leak> matches;
     for (const QRegularExpressionMatch &match : leakExp.globalMatch(content)) {
-        if(match.hasMatch())
-            matches << match.captured(0);
+        matches << match.captured(0);
     }
 
     return matches;

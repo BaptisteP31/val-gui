@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QStandardItemModel>
+#include <QMenu>
+#include <QFileDialog>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,11 +17,15 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    QString fileName = "";
     QStandardItemModel *model;
+    QMenu *optionMenu;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QString get_file_path_dialog();
+    void open_file();
 
 private:
     Ui::MainWindow *ui;
