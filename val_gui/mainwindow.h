@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
     QString fileName = "";
     QStandardItemModel *model;
     QMenu *optionMenu;
+    int lost_bytes=0;
 
 public:
     MainWindow(QWidget *parent = nullptr);

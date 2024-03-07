@@ -10,9 +10,12 @@ reader::reader(QString _path) {
 
     QTextStream in(&file);
     content = in.readLine();
+    new_line_content = content;
 
     while(!in.atEnd()) {
-        content += in.readLine();
+        const QString line = in.readLine();
+        content += line;
+        new_line_content += line + "\n";
     }
 }
 

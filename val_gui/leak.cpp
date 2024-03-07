@@ -30,3 +30,8 @@ Leak::Leak(QString _content)
 
     content = content.trimmed().replace(re,"").replace("    ", "\n");
 }
+
+int Leak::get_lost_bytes() const {
+    static QRegularExpression bytesExp("^\\d*");
+    return bytesExp.match(summary).captured(0).toInt();
+}

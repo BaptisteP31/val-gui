@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *openFile = new QAction("&Open file", this);
     connect(openFile, &QAction::triggered, this, &MainWindow::open_file);
     optionMenu->addAction(openFile);
+
+    // No edit
+    this->ui->lostBytesEdit->setReadOnly(true);
+    this->ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 MainWindow::~MainWindow()
@@ -33,6 +37,8 @@ void MainWindow::open_file() {
     if(fileName.isEmpty()) {
         return;
     }
+
+    lost_bytes=0;
 
     // Create reader object
     reader rd(fileName);
@@ -66,13 +72,18 @@ void MainWindow::open_file() {
         item->appendRow(inFunctions);
         item->setForeground(Qt::darkRed);
         model->appendRow(item);
+
+        lost_bytes+=leak.get_lost_bytes();
     }
 
-    // No edit
-    this->ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     // Label
     model->setHorizontalHeaderLabels(QStringList("Leaks"));
 
+    // update UI
     this->ui->treeView->setModel(model);
     this->ui->summaryText->setPlainText(rd.get_summary());
+    this->ui->lostBytesEdit->setText(QString::number(lost_bytes));
+    this->ui->outputEdit->setPlainText(rd.get_new_line_content());
+
 }

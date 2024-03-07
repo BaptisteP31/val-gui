@@ -14,12 +14,15 @@ class reader
 {
 private:
     QString content;
+    QString new_line_content;
 
 public:
     reader(QString _path);
     QList<Leak> get_leaks();
     QString get_summary() const;
     QString get_command() const;
+    QString get_content() const {return content;}
+    QString get_new_line_content() const {return new_line_content;}
 };
 
 #endif // READER_H
