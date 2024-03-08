@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
     QString fileName = "";
     QStandardItemModel *model;
     QMenu *optionMenu;
+    QMenu *helpMenu;
     int lost_bytes=0;
 
 public:
@@ -27,6 +28,7 @@ public:
     ~MainWindow();
     QString get_file_path_dialog();
     void open_file();
+    void open_help();
 
 private:
     Ui::MainWindow *ui;

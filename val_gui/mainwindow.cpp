@@ -17,6 +17,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(openFile, &QAction::triggered, this, &MainWindow::open_file);
     optionMenu->addAction(openFile);
 
+    // Adds help menu
+    helpMenu = this->ui->menubar->addMenu("Help");
+    QAction *openHelp = new QAction("&Command", this);
+    connect(openHelp, &QAction::triggered, this, &MainWindow::open_help);
+    helpMenu->addAction(openHelp);
+
+
     // No edit
     this->ui->lostBytesEdit->setReadOnly(true);
     this->ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -29,6 +36,13 @@ MainWindow::~MainWindow()
 
 QString MainWindow::get_file_path_dialog() {
     return QFileDialog::getOpenFileName(this,tr("Open txt"), "/", tr("Text (*.txt .*)"));
+}
+
+void MainWindow::open_help() {
+    QMessageBox msgbox;
+    msgbox.setTextInteractionFlags(Qt::TextSelectableByMouse);
+    msgbox.setText("valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  --log-file=valgrind-out.txt <your executable> <your aguments>");
+    msgbox.exec();
 }
 
 void MainWindow::open_file() {
