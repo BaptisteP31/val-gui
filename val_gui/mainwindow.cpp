@@ -77,10 +77,10 @@ void MainWindow::open_file() {
         item->appendRow(inFunctions);
         item->setForeground(Qt::darkRed);
         leakItem->appendRow(item);
-        model->appendRow(leakItem);
 
         lost_bytes+=leak.get_lost_bytes();
     }
+    model->appendRow(leakItem);
 
     // update UI
     this->ui->treeView->setModel(model);
