@@ -47,6 +47,11 @@ void MainWindow::open_file() {
     QList<Leak> leaks = rd.get_leaks();
     model = new QStandardItemModel;
 
+    // Label
+    model->setHorizontalHeaderLabels(QStringList("Report"));
+    QStandardItem *leakItem = new QStandardItem("Leaks");
+    model->appendRow(leakItem);
+
     // populate the treeview
     for (const auto& leak : leaks) {
         // Leak summaries
@@ -63,7 +68,7 @@ void MainWindow::open_file() {
         QStandardItem *inFunctions = new QStandardItem("Functions");
         for (const auto& function : leak.get_functions()) {
             QStandardItem *func = new QStandardItem(function);
-            inFunctions->setForeground(Qt::darkBlue);
+            inFunctions->setForeground(Qt::blue);
             inFunctions->appendRow(func);
         }
 
@@ -71,14 +76,11 @@ void MainWindow::open_file() {
         item->appendRow(inFiles);
         item->appendRow(inFunctions);
         item->setForeground(Qt::darkRed);
-        model->appendRow(item);
+        leakItem->appendRow(item);
+        model->appendRow(leakItem);
 
         lost_bytes+=leak.get_lost_bytes();
     }
-
-
-    // Label
-    model->setHorizontalHeaderLabels(QStringList("Leaks"));
 
     // update UI
     this->ui->treeView->setModel(model);
