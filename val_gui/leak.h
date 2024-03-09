@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QRegularExpression>
 #include <QSize>
+#include <QStandardItem>
 
 class Leak : Error
 {
@@ -22,6 +23,9 @@ public:
     QStringList get_in_files() const {return inFiles;}
     QStringList get_functions() const {return functions;}
     int get_lost_bytes() const;
+
+    // Ownership of the pointer is given to the caller
+    static QStandardItem* get_leaks_as_items(QList<Leak> leaks);
 };
 
 #endif // LEAK_H
