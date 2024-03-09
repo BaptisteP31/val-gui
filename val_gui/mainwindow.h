@@ -21,7 +21,6 @@ class MainWindow : public QMainWindow
     QStandardItemModel *model;
     QMenu *optionMenu;
     QMenu *helpMenu;
-    int lost_bytes=0;
 
 public:
     MainWindow(QWidget *parent = nullptr);

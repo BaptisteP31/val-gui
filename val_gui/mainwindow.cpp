@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // No edit
-    this->ui->lostBytesEdit->setReadOnly(true);
     this->ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
@@ -52,8 +51,6 @@ void MainWindow::open_file() {
         return;
     }
 
-    lost_bytes=0;
-
     // Create reader object
     reader rd(fileName);
     this->setWindowTitle(rd.get_command());
@@ -64,7 +61,6 @@ void MainWindow::open_file() {
     // Label
     model->setHorizontalHeaderLabels(QStringList("Report"));
     QStandardItem *leakItem = new QStandardItem("Leaks");
-    model->appendRow(leakItem);
 
     // populate the treeview
     for (const auto& leak : leaks) {
@@ -91,15 +87,12 @@ void MainWindow::open_file() {
         item->appendRow(inFunctions);
         item->setForeground(Qt::darkRed);
         leakItem->appendRow(item);
-
-        lost_bytes+=leak.get_lost_bytes();
     }
     model->appendRow(leakItem);
 
     // update UI
     this->ui->treeView->setModel(model);
     this->ui->summaryText->setPlainText(rd.get_summary());
-    this->ui->lostBytesEdit->setText(QString::number(lost_bytes));
     this->ui->outputEdit->setPlainText(rd.get_new_line_content());
 
 }
