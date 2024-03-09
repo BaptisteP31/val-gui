@@ -3,7 +3,7 @@
 
 #include "error.h"
 #include <QList>
-#include <Qdebug>
+#include <QDebug>
 #include <QRegularExpression>
 #include <QSize>
 
